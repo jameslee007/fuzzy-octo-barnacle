@@ -5,6 +5,8 @@
 poetry install
 
 ## Run the service
+pushd data-ops;
+
 ### Install the Meltano dependencies
 poetry run meltano install
 
