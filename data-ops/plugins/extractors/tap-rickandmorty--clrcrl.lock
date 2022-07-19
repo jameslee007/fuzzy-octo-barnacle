@@ -1,0 +1,26 @@
+{
+  "plugin_type": "extractors",
+  "name": "tap-rickandmorty",
+  "namespace": "tap_rickandmorty",
+  "variant": "clrcrl",
+  "label": "Rick and Morty API",
+  "docs": "https://hub.meltano.com/extractors/tap-rickandmorty--clrcrl",
+  "repo": "https://github.com/clrcrl/tap-rickandmorty",
+  "pip_url": "git+https://github.com/clrcrl/tap-rickandmorty.git",
+  "capabilities": [
+    "about",
+    "catalog",
+    "discover"
+  ],
+  "settings_group_validation": [
+    []
+  ],
+  "settings": [
+    {
+      "name": "start_date",
+      "kind": "date_iso8601",
+      "label": "Start Date",
+      "description": "The date to start syncing data from."
+    }
+  ]
+}

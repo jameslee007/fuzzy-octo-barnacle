@@ -1,0 +1,40 @@
+version: 1
+default_environment: dev
+project_id: 51ba7419-188e-4343-9392-4199b1d04fd0
+plugins:
+  extractors:
+  - name: tap-rickandmorty
+    variant: clrcrl
+    pip_url: git+https://github.com/clrcrl/tap-rickandmorty.git
+  loaders:
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
+  - name: target-redshift
+    variant: transferwise
+    pip_url: pipelinewise-target-redshift
+  orchestrators:
+  - name: airflow
+    variant: apache
+    pip_url: apache-airflow==2.1.2 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.1.2/constraints-${MELTANO__PYTHON_VERSION}.txt
+  files:
+  - name: files-airflow
+    variant: meltano
+    pip_url: git+https://github.com/meltano/files-airflow.git
+schedules:
+- name: daily-load
+  interval: '@daily'
+  job: daily-load
+environments:
+- name: dev
+  config:
+    plugins:
+      loaders:
+      - name: target-jsonl
+        config:
+          destination_path: ./.data
+          do_timestamp_file: true
+jobs:
+- name: daily-load
+  tasks:
+  - tap-rickandmorty target-jsonl

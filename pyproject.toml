@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "fuzzy-octo-barnacle"
+version = "0.1.0"
+description = ""
+authors = ["Ahren Stevens-Taylor <ahrent@packt.com>"]
+license = "UNLICENSED"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+meltano = "^2.1.0"
+psycopg2-binary = "^2.9.3"
+
+[tool.poetry.dev-dependencies] 
+
+[tool.poetry.scripts]
+install = "meltano install"
+schedule = "meltano invoke airflow scheduler"
+serve = "meltano invoke airflow webserver"
+list = "meltano invoke airflow dags list"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
