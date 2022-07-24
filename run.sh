@@ -14,4 +14,4 @@ poetry run meltano install
 poetry run meltano invoke airflow scheduler
 
 ### Run the Webserver
-poetry run meltano invoke webserver
+poetry run meltano invoke airflow webserver
