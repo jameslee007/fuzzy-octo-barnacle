@@ -6,9 +6,10 @@ authors = ["Ahren Stevens-Taylor <ahrent@packt.com>"]
 license = "UNLICENSED"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 meltano = "^2.1.0"
 psycopg2-binary = "^2.9.3"
+Werkzeug = "2.1.2"
 
 [tool.poetry.dev-dependencies] 
 
