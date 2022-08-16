@@ -14,11 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: sudo docker build . --file Dockerfile --tag poetry-${GITHUB_SHA}
-    #- name: Run the Poetry app
-    #  run: sudo docker run poetry-${GITHUB_SHA}:$(date +%s)
-    - name: Run the build process with Docker
-      uses: addnab/docker-run-action@v3
-      with:
-        image: poetry-${GITHUB_SHA}
+    #- name: Build the Docker image
+    #  run: sudo docker build . --file Dockerfile --tag poetry-${GITHUB_SHA}
+    - name: Run the Poetry app
+      run: sudo docker run -d poetry-a6ea27eeb64c0efe7bba711d835e0105fe265570:1660662886
+
