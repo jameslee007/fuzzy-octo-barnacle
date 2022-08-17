@@ -1,21 +1,36 @@
-name: Docker Image CI
+name: Docker Image CI #Workflow Name
 
 on:
   push:
-    branches: [ "main" ]
-  #pull_request:
-  #  branches: [ "main" ]
+    branches: [ "main" ]  # When pushing to main branch then run this action
 
+#ENV variables
+env:
+  DOCKER_USER: ${{secrets.DOCKER_USER}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  REPO_NAME: ${{secrets.REPO_NAME}}
+  
 jobs:
 
-  build:
+  push-image-to-docker-hub:  #Job Name
 
-    runs-on: self-hosted
+    runs-on: self-hosted  #The runner i configured in my laptop. So these actions will run in my laptop which is ubuntu
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3   #checkout the code
+    - name: docker login
+      run: | # log into docker hub account
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
+    - name: Build the Docker image # push The image to the docker hub
+      run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
+    - name: Docker Push
+      run: docker push $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
+    - name: Run the Poetry app
+      run: sudo docker run -d -p 8793:8793 $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
+  
+#OLD
     #- name: Build the Docker image
     #  run: sudo docker build . --file Dockerfile --tag poetry-${GITHUB_SHA}
-    - name: Run the Poetry app
-      run: sudo docker run -d -p 8793:8793 poetry-test2
+    #- name: Run the Poetry app
+    #  run: sudo docker run -d -p 8793:8793 poetry-test2
 
