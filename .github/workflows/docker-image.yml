@@ -12,29 +12,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2   #checkout the code
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+#-----------------------------------------------------------------------------------------------------#    
+#### Not working as per https://github.com/docker/login-action/issues/29  - 
+####@kushthedude Secrets are not passed to the runner when a workflow is triggered from a forked repository. so i am not able to login 
+#### into the dockerhub as it compains "Username and password required"
+#    - name: Login to DockerHub
+#      uses: docker/login-action@v1
+#      with:
+#        username: ${{ secrets.DOCKERHUB_USERNAME }}
+#        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: $DOCKER_USER/fuzzy:latest
-        
-#    - name: Build the Docker image # push The image to the docker hub
-#      run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
-#    - name: Docker Push
-#      run: docker push $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
-#    - name: Run the Poetry app
-#      run: sudo docker run -d -p 8793:8793 $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
-  
-#OLD
-    #- name: Build the Docker image
-    #  run: sudo docker build . --file Dockerfile --tag poetry-${GITHUB_SHA}
-    #- name: Run the Poetry app
-    #  run: sudo docker run -d -p 8793:8793 poetry-test2
+#    - name: Build and push
+#      uses: docker/build-push-action@v2
+#      with:
+#        context: .
+#        push: true
+#        tags: $DOCKER_USER/fuzzy:latest
+#---------------------------------------------------------------------------------------------------#
+
+#### because of the above error Just building in the same server and running the app
+    - name: Build the Docker image
+      run: sudo docker build . --file Dockerfile --tag poetry-${GITHUB_SHA}
+    - name: Run the Poetry app
+      run: sudo docker run -d -p 8793:8793 poetry-${GITHUB_SHA}
 
