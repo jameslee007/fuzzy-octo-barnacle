@@ -13,3 +13,4 @@ The CI/CD pipeline can be managed from any platform, but must be maintained in c
 The code to install and run the service is in the run.sh file.
 
 Tested with Python 3.9.6
+#TEST
