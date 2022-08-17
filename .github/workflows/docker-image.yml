@@ -3,12 +3,6 @@ name: Docker Image CI #Workflow Name
 on:
   push:
     branches: [ "main" ]  # When pushing to main branch then run this action
-
-#ENV variables
-env:
-  DOCKER_USER: ${{secrets.DOCKER_USER}}
-  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-  REPO_NAME: ${{secrets.REPO_NAME}}
   
 jobs:
 
@@ -17,12 +11,13 @@ jobs:
     runs-on: self-hosted  #The runner i configured in my laptop. So these actions will run in my laptop which is ubuntu
 
     steps:
-    - uses: actions/checkout@v3   #checkout the code
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: actions/checkout@v2   #checkout the code
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
 
     - name: Build the Docker image # push The image to the docker hub
       run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:${GITHUB_SHA}
